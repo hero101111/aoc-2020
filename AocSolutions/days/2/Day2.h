@@ -39,13 +39,8 @@ public:
         int min = stoi(matches[0]);
         int max = stoi(matches[1]);
 
-        int c = 0;
-        for (auto l : password)
-        {
-          if (l == letter)
-            c++;
-        }
-        if (c >= min && c <= max)
+        int c = count(begin(password), end(password), letter);
+        if (clamp(c, min, max) == c)
           ret++;
         break;
       }
