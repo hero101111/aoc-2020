@@ -18,5 +18,8 @@ public:
 
   virtual ~ISolutionDay() { verbose.close(); };
 
-  virtual bool Test() { return true; }
+  virtual bool Test() { mCurrentInput = "input";  return true; }
+
+  string mCurrentInput{ "input" };
+
 };

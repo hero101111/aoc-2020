@@ -1,5 +1,7 @@
 #pragma once
 
+using LL = long long;
+
 void pic(string data)
 {
   const char* output = data.c_str();
