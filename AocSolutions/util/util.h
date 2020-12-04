@@ -384,6 +384,13 @@ vector<string> RegexMatch(string s, string regex)
   return ret;
 }
 
+bool RegexIsMatch(string s, string regex)
+{
+  std::regex re2(regex);
+  std::smatch match2;
+  return std::regex_search(s, match2, re2);
+}
+
 string RegexReplace(string s, string rgx, string replace)
 {
   regex re(rgx);

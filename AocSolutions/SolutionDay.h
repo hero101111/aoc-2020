@@ -20,6 +20,15 @@ public:
 
   virtual bool Test() { mCurrentInput = "input";  return true; }
 
+  virtual string GetDay() { return "0";  }
+
   string mCurrentInput{ "input" };
+
+  string GetInputPath() 
+  {
+    const string day = GetDay(); 
+    assert(day != "0");
+    return KINPUT + day + "\\" + mCurrentInput + ".txt";
+  };
 
 };
