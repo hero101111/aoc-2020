@@ -30,49 +30,13 @@ public:
 
   LL DoWork(bool partTwo)
   {
-    LL ret = 0;
-
-    vector<Point> seats;
-    for (auto d : mData)
-    { 
-      int min = 0;
-      int max = 127;
-
-
-      int row = 0, column = 0;
-      for (int i = 0; i < d.size(); ++i)
-      {
-        char c = d[i];
-
-        if (c == 'F' || c == 'L')
-        {
-          max = max - ceil(((double)max - min) / 2);
-        }
-        if (c == 'B' || c == 'R')
-        {
-          min = min + ceil(((double)max - min) / 2);
-        }
-
-        if (i == 6)
-        {
-          row = min;
-          min = 0;
-          max = 7;
-        }
-
-        if (i == d.size() - 1)
-        {
-          column = min;
-          seats.push_back({ row, column });
-        }
-      }
-    }
-
     vector<LL> seatValues;
-    for (auto s : seats)
+
+    transform(begin(mData), end(mData), back_inserter(seatValues), [](string seat)
     {
-      seatValues.push_back(s.x * 8 + s.y);
-    }
+      seat = RegexReplace(seat, { { "F|L", "0" }, { "B|R", "1" } });
+      return 8 * stoi(seat.substr(0, 7), nullptr, 2) + stoi(seat.substr(7, 3), nullptr, 2);
+    });
 
     if (!partTwo)
     {
@@ -81,20 +45,11 @@ public:
     else
     {
       sort(begin(seatValues), end(seatValues));
-      for (int i = 1; i < seatValues.size() - 2; ++i)
-      {
-        if (seatValues[i - 1] != seatValues[i] - 1)
-        {
-          return seatValues[i] - 1;
-        }
-        if (seatValues[i + 1] != seatValues[i] + 1)
-        {
-          return seatValues[i] + 1;
-        }
-      }
+      for (auto it = begin(seatValues) + 1; it != end(seatValues); ++it)
+        if (*(it-1) != *it - 1)
+          return *it - 1;
     }
-
-    return *std::max_element(begin(seatValues), end(seatValues));
+    return 0;
   }
 
   string Part1() override

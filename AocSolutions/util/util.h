@@ -397,6 +397,16 @@ string RegexReplace(string s, string rgx, string replace)
   return regex_replace(s, re, replace);
 }
 
+string RegexReplace(string s, initializer_list<pair<string, string>> replace)
+{
+  for (auto kv : replace)
+  {
+    s = RegexReplace(s, kv.first, kv.second);
+  }
+  return s;
+}
+
+
 template<class T>
 vector<T> GetDigits(T n)
 {
