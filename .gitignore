@@ -8,3 +8,5 @@
 Debug/
 Release/
 .vs/
+out.txt
+verbose.txt
