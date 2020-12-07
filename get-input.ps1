@@ -1,16 +1,23 @@
-  param($day)
+param($day)
   
-  $downloadToPath = "C:\Work\aoc-2020\AocSolutions\inputs\Day$day\input.txt"
-  $remoteFileLocation = "https://adventofcode.com/2020/day/$day/input"
+if ($day -eq $null) {
+  $day = (Get-Date).Day
+}
   
-  $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+$downloadToPath = "C:\Work\aoc-2020\AocSolutions\inputs\Day$day\input.txt"
+if (!(Test-Path C:\Work\aoc-2020\AocSolutions\inputs\Day$day)) {
+  New-Item -Path "C:\Work\aoc-2020\AocSolutions\inputs\" -name "Day$day" -ItemType "directory" 
+}
+$remoteFileLocation = "https://adventofcode.com/2020/day/$day/input"
+  
+$session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
     
-  $cookie = New-Object System.Net.Cookie 
+$cookie = New-Object System.Net.Cookie 
     
-  $cookie.Name = "session"
-  $cookie.Value = $env:AOC_SESSION
-  $cookie.Domain = ".adventofcode.com"
+$cookie.Name = "session"
+$cookie.Value = $env:AOC_SESSION
+$cookie.Domain = ".adventofcode.com"
 
-  $session.Cookies.Add($cookie);
+$session.Cookies.Add($cookie);
 
-  Invoke-WebRequest $remoteFileLocation -WebSession $session -TimeoutSec 900 -OutFile $downloadToPath
+Invoke-WebRequest $remoteFileLocation -WebSession $session -TimeoutSec 900 -OutFile $downloadToPath
