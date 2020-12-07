@@ -25,6 +25,7 @@ public:
   {
     mData = DataType();
     mData = rff(GetInputPath());
+    mData.push_back("");
   }
 
   LL DoWork(bool partTwo)
