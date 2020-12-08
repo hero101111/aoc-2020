@@ -65,9 +65,6 @@
     <ClInclude Include="util\util.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="util\IntComputer.h">
-      <Filter>Header Files\util</Filter>
-    </ClInclude>
     <ClInclude Include="days\8\Day8.h">
       <Filter>Header Files\Week2</Filter>
     </ClInclude>
@@ -124,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="days\1\Day1.h">
       <Filter>Header Files\Week1</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Executer.h">
+      <Filter>Header Files\util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
