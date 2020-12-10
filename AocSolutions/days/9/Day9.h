@@ -7,7 +7,7 @@ class Day9 : public ISolutionDay
 {
 private:
 
-  using DataType = vector<string>;
+  using DataType = vector<LL>;
   DataType mData;
 
 public:
@@ -24,29 +24,25 @@ public:
   void ReadData()
   {
     mData = DataType();
-    mData = rff(GetInputPath());
+    mData = rffll(GetInputPath());
   }
 
   LL DoWork(bool partTwo)
   {
-    vector<LL> nums;
-    for (auto d : mData)
-      nums.push_back(stoll(d));
-
     if (!partTwo)
     {
       int offset = 25;
-       for (int i = offset; i < nums.size(); ++i)
+       for (int i = offset; i < mData.size(); ++i)
        {
          bool isValid = false;
          for (int j = i - offset; j < i - 1; j++)
            for (int k = j + 1; k < i; k++)
            {
-             if (nums[j] + nums[k] == nums[i])
+             if (mData[j] + mData[k] == mData[i])
                isValid = true;
            }
          if (!isValid)
-           return nums[i];
+           return mData[i];
        }
     }
     else
@@ -59,12 +55,12 @@ public:
         {
           LL sum = 0;
           for (int k = i; k <= j; ++k)
-            sum += nums[k];
+            sum += mData[k];
           if (sum == toFind)
           {
             vector<LL> outs;
             for (int k = i; k <= j; ++k)
-              outs.push_back(nums[k]);
+              outs.push_back(mData[k]);
             sort(begin(outs), end(outs));
 
             return *outs.begin() + *(outs.end() - 1);
