@@ -40,7 +40,9 @@ struct Point
 
   Point() {}
   Point(long long ax, long long ay, long long az = 0) : x(ax), y(ay), z(az) { }
-  Point(string ax, string ay, string az = "0") : x(stoi(ax)), y(stoi(ay)), z(stoi(az)) { }
+  Point(string ax, string ay, string az = "0") : x(stoll(ax)), y(stoll(ay)), z(stoll(az)) { }
+  Point(tuple<string, string> coord) : x(stoll(get<0>(coord))), y(stoll(get<1>(coord))), z(0) { }
+  Point(tuple<string, string, string> coord) : x(stoll(get<0>(coord))), y(stoll(get<1>(coord))), z(stoll(get<2>(coord))) { }
 
   long long & operator[](int index)
   {
@@ -129,10 +131,10 @@ struct Point
 
     auto tokens = tok(stringValue, ',');
     assert(tokens.size() >= 2);
-    ret.x = stoi(tokens[0]);
-    ret.y = stoi(tokens[1]);
+    ret.x = stoll(tokens[0]);
+    ret.y = stoll(tokens[1]);
     if (tokens.size() > 2)
-      ret.z = stoi(tokens[2]);
+      ret.z = stoll(tokens[2]);
 
     return ret;
   }
@@ -384,6 +386,69 @@ vector<string> RegexMatch(string s, string regex)
   return ret;
 }
 
+tuple<string> RegExMatch1(string s, string regex)
+{
+  auto data = RegexMatch(s, regex);
+  tuple<string> ret;
+  get<0>(ret) = data[0];
+  return ret;
+}
+
+tuple<string, string> RegExMatch2(string s, string regex)
+{
+  auto data = RegexMatch(s, regex);
+  tuple<string, string> ret;
+  get<0>(ret) = data[0];
+  get<1>(ret) = data[1];
+  return ret;
+}
+
+tuple<string, string, string> RegExMatch3(string s, string regex)
+{
+  auto data = RegexMatch(s, regex);
+  tuple<string, string, string> ret;
+  get<0>(ret) = data[0];
+  get<1>(ret) = data[1];
+  get<2>(ret) = data[2];
+  return ret;
+}
+
+tuple<string, string, string, string> RegExMatch4(string s, string regex)
+{
+  auto data = RegexMatch(s, regex);
+  tuple<string, string, string, string> ret;
+  get<0>(ret) = data[0];
+  get<1>(ret) = data[1];
+  get<2>(ret) = data[2];
+  get<3>(ret) = data[3];
+  return ret;
+}
+
+tuple<string, string, string, string, string> RegExMatch5(string s, string regex)
+{
+  auto data = RegexMatch(s, regex);
+  tuple<string, string, string, string, string> ret;
+  get<0>(ret) = data[0];
+  get<1>(ret) = data[1];
+  get<2>(ret) = data[2];
+  get<3>(ret) = data[3];
+  get<4>(ret) = data[4];
+  return ret;
+}
+
+tuple<string, string, string, string, string, string> RegExMatch6(string s, string regex)
+{
+  auto data = RegexMatch(s, regex);
+  tuple<string, string, string, string, string, string> ret;
+  get<0>(ret) = data[0];
+  get<1>(ret) = data[1];
+  get<2>(ret) = data[2];
+  get<3>(ret) = data[3];
+  get<4>(ret) = data[4];
+  get<5>(ret) = data[5];
+  return ret;
+}
+
 bool RegexIsMatch(string s, string regex)
 {
   std::regex re2(regex);
@@ -433,6 +498,22 @@ vector<string> rff(string filePath, function<void(string &)> func = nullptr)
   {
     if (func != nullptr) func(s);
     ret.push_back(s);
+  }
+
+  return ret;
+}
+
+vector<LL> rffll(string filePath, function<void(string&)> func = nullptr)
+{
+  vector<LL> ret;
+  ifstream f;
+  f.open(filePath);
+  string s;
+
+  while (getline(f, s))
+  {
+    if (func != nullptr) func(s);
+    ret.push_back(stoll(s));
   }
 
   return ret;
@@ -642,6 +723,19 @@ public:
     return ret;
   }
 
+  vector<pair<Point, T>> Traverse()
+  {
+    vector<pair<Point, T>> ret;
+    for (int line : range_y())
+      for (int col : range_x())
+      {
+        Point p{ col, line };
+        assert(at(p, nullptr));
+        ret.push_back(make_pair(p, (*this)[p]));
+      }
+    return ret;
+  }
+
   void fromfile(string filepath, function<T(char)> readFunc = nullptr)
   {
     vector<string> lines = rff(filepath);
@@ -720,7 +814,7 @@ struct objmap
 
   vector<T> translate(const vector<int> & path)
   {
-    vector<Point> ret;
+    vector<T> ret;
     for (auto p : path)
       ret.push_back(translate(p));
     return ret;
@@ -818,16 +912,17 @@ void printmap(unordered_map<T, U>& m, S & stream)
   }
 }
 
+template<class T>
 class Graph
 {
+private:
   typedef pair<int, int> WeightNodePair;
 
   int vertexCount;
 
   vector<list< pair<int, int>>> adjacency;
 
-  void DoTopoSort(int v, bool visited[],
-    stack<int>& Stack)
+  void DoTopoSort(int v, bool visited[], stack<int> & Stack)
   {
     // Mark the current node as visited. 
     visited[v] = true;
@@ -842,13 +937,7 @@ class Graph
     Stack.push(v);
   }
 
-public:
-
-  Graph(int aVertexCount)
-  {
-    this->vertexCount = aVertexCount;
-    adjacency.resize(aVertexCount);
-  }
+  objmap<T> mapper;
 
   void AddEdge(int node1, int node2, int weight)
   {
@@ -1021,7 +1110,7 @@ public:
     return retNodes;
   }
 
-  vector<int> SortTopologically()
+  vector<int> SortTopo()
   {
     stack<int> Stack;
 
@@ -1042,6 +1131,139 @@ public:
       ret.push_back(Stack.top());
       Stack.pop();
     }
+    return ret;
+  }
+
+  vector<vector<int>> GetAllPaths(int from, int to)
+  {
+    vector<vector<int>> ret;
+
+    bool * visited = new bool[vertexCount];
+
+    int * path = new int[vertexCount];
+    int path_index = 0;
+
+    for (int i = 0; i < vertexCount; i++)
+      visited[i] = false;
+
+    GetAllPathsUtil(from, to, visited, path, path_index, ret);
+
+    return ret;
+  }
+
+  void GetAllPathsUtil(int u, int d, bool visited[],
+                         int path[], int & path_index, 
+                         vector<vector<int>> & bucket)
+  {
+    visited[u] = true;
+    path[path_index] = u;
+    path_index++;
+
+    if (u == d) 
+    {
+     vector<int> newPath;
+     for (int i = 0; i < path_index; i++)
+      newPath.push_back(path[i]);
+     bucket.push_back(newPath);
+    }
+    else
+    {
+      for (auto i = adjacency[u].begin(); i != adjacency[u].end(); ++i)
+        if (!visited[i->first])
+          GetAllPathsUtil(i->first, d, visited, path, path_index, bucket);
+    }
+
+    path_index--;
+    visited[u] = false;
+  }
+
+  LL CountPaths(int from, int to)
+  {
+    LL pathCount = 0;
+    CountPathsUtil(from, to, pathCount);
+    return pathCount;
+  }
+
+  void CountPathsUtil(int u, int d, LL & pathCount)
+  {
+    if (u == d)
+      pathCount++;
+    else
+    {
+      for (auto i = adjacency[u].begin(); i != adjacency[u].end(); ++i)
+        CountPathsUtil(i->first, d, pathCount);
+    }
+  }
+
+  public:
+
+  Graph(int aVertexCount)
+  {
+    this->vertexCount = aVertexCount;
+    adjacency.resize(aVertexCount);
+  }
+  
+  void AddEdge(const T & node1, const T & node2, int weight)
+  {
+    return AddEdge(mapper[node1], mapper[node2], weight);
+  }
+
+  void AddOrIncrementEdge(const T & node1, const T & node2, int weight)
+  {
+    AddOrIncrementEdge(mapper[node1], mapper[node2], weight);
+  }
+
+  vector<T> GetEdgesFrom(const T & node1)
+  {
+    return mapper.translate(GetEdgesFrom(mapper[node1]));
+  }
+
+  vector<T> GetEdgesTo(const T & node1)
+  {
+    return mapper.translate(GetEdgesTo(mapper[node1]));
+  }
+
+  void AddEdgeSymmetrical(const T & node1, const T & node2, int weight)
+  {
+    AddEdgeSymmetrical(mapper[node1], mapper[node2], weight);
+  }
+
+  void ClearEdge(const T & node1, const T & node2)
+  {
+    return ClearEdge(mapper[node1], mapper[node2]);
+  }
+
+  map<T, int> GetDistances(const T & src)
+  {
+    map<T, int> ret;
+    auto dist = GetDistances(mapper[src]);
+    for (auto d : dist)
+      ret[mapper.translate(d.first)] = d.second;
+    return ret;
+  }
+
+  vector<T> GetShortestPath(const T & src, const T & dest)
+  {
+    auto path = GetShortestPath(mapper[src], mapper[dest]);
+    return mapper.translate(path);
+  }
+
+  vector<T> SortTopologically()
+  {
+    return mapper.translate(SortTopo());
+  }
+
+  LL CountPaths(const T & s, const T & d)
+  {
+    return CountPaths(mapper[s], mapper[d]);
+  }
+
+  vector<vector<T>> GetAllPaths(const T& from, const T& to)
+  {
+    auto paths = GetAllPaths(mapper[from], mapper[to]);
+    vector<vector<T>> ret;
+    for (auto path : paths)
+      ret.push_back(mapper.translate(path));
     return ret;
   }
 };
