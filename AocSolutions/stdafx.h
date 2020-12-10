@@ -22,6 +22,7 @@
 #include <queue>
 #include <stack>
 #include <assert.h>
+#include <ranges>
 
 #include <Windows.h>
 
