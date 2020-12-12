@@ -4,9 +4,9 @@ if ($day -eq $null) {
   $day = (Get-Date).Day
 }
   
-$downloadToPath = "C:\Work\aoc-2020\AocSolutions\inputs\Day$day\input.txt"
-if (!(Test-Path C:\Work\aoc-2020\AocSolutions\inputs\Day$day)) {
-  New-Item -Path "C:\Work\aoc-2020\AocSolutions\inputs\" -name "Day$day" -ItemType "directory" 
+$downloadToPath = ".\AocSolutions\inputs\Day$day\input.txt"
+if (!(Test-Path ".\AocSolutions\inputs\Day$day")) {
+  New-Item -Path ".\AocSolutions\inputs\" -name "Day$day" -ItemType "directory" 
 }
 $remoteFileLocation = "https://adventofcode.com/2020/day/$day/input"
   
