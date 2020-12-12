@@ -7,7 +7,6 @@ class Day12 : public ISolutionDay
 {
 private:
 
-  //using DataType = DynamicMap<char>;
   using DataType = vector<string>;
   DataType mData;
 
@@ -26,15 +25,14 @@ public:
 
   void ReadData()
   {
-    mData = DataType();
-
+    mData.clear();
     mData = rff(GetInputPath());
+    dirs.clear();
     for (auto d : mData)
     {
       auto [dir, quant] = RegExMatch2(d, R"((\w)(\d+))");
       dirs.push_back(make_pair(dir[0], stoi(quant)));
     }
-    //mData.fromfile(GetInputPath());
   }
 
   char RotateDirection(char dir, int rot)
@@ -68,55 +66,74 @@ public:
     return ret;
   }
 
-  LL DoWork()
+  void Walk(Point & location, char walkDir, int quant)
   {
-    LL ret = 121;
-
-    char direction = 'E';
-    Point location;
-    for (auto d : dirs)
+    switch (walkDir)
     {
-      switch (d.first)
-      {
-      case 'N':
-        location.y += d.second;
-        break;
-      case 'S':
-        location.y -= d.second;
-        break;
-      case 'E':
-        location.x += d.second;
-        break;
-      case 'W':
-        location.x -= d.second;
-        break;
-      case 'L':
-        direction = RotateDirection(direction, -d.second);
-        break;
-      case 'R':
-        direction = RotateDirection(direction, d.second);
-        break;
-      case 'F':
-        switch (direction)
-        {
-        case 'N':
-          location.y += d.second;
-          break;
-        case 'S':
-          location.y -= d.second;
-          break;
-        case 'E':
-          location.x += d.second;
-          break;
-        case 'W':
-          location.x -= d.second;
-          break;
-        }
-        break;
-      }
+    case 'N':
+      location.y += quant;
+      break;
+    case 'S':
+      location.y -= quant;
+      break;
+    case 'E':
+      location.x += quant;
+      break;
+    case 'W':
+      location.x -= quant;
+      break;
+    default:
+      assert(!"invalid");
     }
-    ret =  manhattan(0, 0, location.x, location.y);
+  }
 
+  LL DoWork(bool partTwo)
+  {
+    Point location, waypoint{ 10, 1 };
+    char direction = 'E';
+    for (auto [dir, quant] : dirs)
+    {
+      if (dir == 'F')
+      {
+        if (partTwo)
+        {
+          Point diff = waypoint;
+          for (auto i : rangeint(1, quant))
+            location = location + diff;
+        }
+        else
+        {
+          Walk(location, direction, quant);
+        }
+      }
+      else if (dir == 'L')
+      {
+        if (partTwo)
+        {
+          waypoint = waypoint.GetRotatedAround(Point(), -quant);
+        }
+        else
+        {
+          direction = RotateDirection(direction, -quant);
+        }
+      }
+      else if (dir == 'R')
+      {
+        if (partTwo)
+        {
+          waypoint = waypoint.GetRotatedAround(Point(), quant);
+        }
+        else
+        {
+          direction = RotateDirection(direction, quant);
+        }
+      }
+      else
+      {
+        Walk(partTwo ? waypoint : location, dir, quant);
+      }
+    }    
+    LL ret = manhattan(0, 0, location.x, location.y);
     return ret;
   }
 
@@ -124,32 +141,22 @@ public:
   {
     ReadData();
 
-    return std::to_string(DoWork());
+    return std::to_string(DoWork(false));
   }
 
   string Part2() override
   {
     ReadData();
 
-    return std::to_string(DoWork());
+    return std::to_string(DoWork(true));
   }
 
   bool Test() override
   {
     {
-      mCurrentInput = "test";
-      //assert(Part1() == "25");
-      //assert(Part2() == "");
-    }
-    {
-      mCurrentInput = "test2";
-      //assert(Part1() == "");
-      //assert(Part2() == "");
-    }
-    {
       mCurrentInput = "input";
-      //assert(Part1() == "");
-      //assert(Part2() == "");
+      assert(Part1() == "381");
+      assert(Part2() == "28591");
     }
     return ISolutionDay::Test();
   }

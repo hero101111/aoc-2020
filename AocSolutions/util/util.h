@@ -34,6 +34,36 @@ vector<string> tok(string str, char sep = ' ')
   return ret;
 }
 
+double sinDegress(int angle)
+{
+  if (angle == 0)
+    return 0;
+  if (angle == 90)
+    return 1;
+  if (angle == 180)
+    return 0;
+  if (angle == 270)
+    return -1;
+
+  double toRad = angle * 3.14159265358979 / 180.0;
+  return sin(toRad);
+}
+
+double cosDegrees(int angle)
+{
+  if (angle == 0)
+    return 1;
+  if (angle == 90)
+    return 0;
+  if (angle == 180)
+    return -1;
+  if (angle == 270)
+    return 0;
+
+  double toRad = angle * 3.14159265358979 / 180.0;
+  return cos(toRad);
+}
+
 struct Point
 {
   long long x{ 0 }, y{ 0 }, z{ 0 };
@@ -116,6 +146,46 @@ struct Point
   Point Right() const
   {
     return Point{ x + 1, y, z };
+  }
+
+  Point UpLeft() const
+  {
+    return Point{ x - 1, y - 1, z };
+  }
+
+  Point UpRight() const
+  {
+    return Point{ x + 1, y - 1, z };
+  }
+
+  Point DownLeft() const
+  {
+    return Point{ x - 1, y + 1, z };
+  }
+
+  Point DownRight() const
+  {
+    return Point{ x + 1, y + 1, z };
+  }
+
+  Point GetRotatedAround(Point pivot, int rotAngleDegrees)
+  {
+    Point toRotate = *this - pivot;
+    int sign = -1;
+
+    if (rotAngleDegrees < 0)
+    {
+      sign = 1;
+      rotAngleDegrees *= -1;
+    }
+
+    Point ret;
+    ret.x = toRotate.x * cosDegrees(rotAngleDegrees) - sign * toRotate.y * sinDegress(rotAngleDegrees);
+    ret.y = toRotate.y * cosDegrees(rotAngleDegrees) + sign * toRotate.x * sinDegress(rotAngleDegrees);
+
+    ret = ret + pivot;
+
+    return ret;
   }
 
   static Point Parse(string stringValue)
@@ -538,7 +608,7 @@ string trim(string str)
   return ltrim(rtrim(str));
 }
 
-int manhattan(int x1, int y1, int x2, int y2)
+LL manhattan(LL x1, LL y1, LL x2, LL y2)
 {
   return abs(x1 - x2) + abs(y1 - y2);
 }
@@ -1335,7 +1405,6 @@ long long power(long long x, long long y, long long p)
   }
   return res;
 }
-
 
 void toConsole(Point p, const string & s) {
   DWORD dw;
