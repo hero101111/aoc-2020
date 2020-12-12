@@ -40,10 +40,10 @@ public:
       {
       case 1:
       {
-        int min = stoi(matches[0]);
-        int max = stoi(matches[1]);
+        LL min = stoi(matches[0]);
+        LL max = stoi(matches[1]);
 
-        int c = count(begin(password), end(password), letter);
+        LL c = count(begin(password), end(password), letter);
         if (clamp(c, min, max) == c)
           ret++;
         break;

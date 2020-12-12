@@ -94,7 +94,7 @@ struct Point
     return x;
   }
 
-  const int& operator[](int index) const
+  const long long & operator[](int index) const
   {
     if (index == 0)
       return x;
@@ -432,7 +432,7 @@ struct Point
     return ret;
   }
 
-  int ManhattanDist(const Point& p) const
+  long long ManhattanDist(const Point& p) const
   {
     return abs(x - p.x) + abs(y - p.y) + abs(z - p.z);
   }
@@ -644,14 +644,14 @@ template<class T>
 class DynamicMap
 {
 public:
-  using DT = unordered_map<int, unordered_map<int, T>>;
+  using DT = unordered_map<long long, unordered_map<long long, T>>;
 
   DT data;
 
-  int max_y = numeric_limits<int>::min();
-  int max_x = numeric_limits<int>::min();
-  int min_x = numeric_limits<int>::max();
-  int min_y = numeric_limits<int>::max();
+  long long max_y = numeric_limits<int>::min();
+  long long max_x = numeric_limits<int>::min();
+  long long min_x = numeric_limits<int>::max();
+  long long min_y = numeric_limits<int>::max();
 
   DynamicMap<T>& operator =(const DynamicMap<T>& other)
   {
@@ -778,12 +778,12 @@ public:
     return data.empty();
   }
 
-  int width() const
+  long long width() const
   {
     return abs(max_x - min_x) + 1;
   }
 
-  int height() const
+  long long height() const
   {
     return abs(max_y - min_y) + 1;
   }
@@ -1361,7 +1361,7 @@ long long gcd(long long a, long long b)
 
 long long lcm(long long a, long long b)
 {
-  int g = gcd(a, b);
+  long long g = gcd(a, b);
   return g ? (a / g * b) : 0;
 }
 
@@ -1381,7 +1381,8 @@ long long modInverse(long long a, long long m)
 
     // m is remainder now, process same as 
     // Euclid's algo 
-    m = a % m, a = t;
+    m = a % m;
+    a = t;
     t = y;
 
     // Update y and x 

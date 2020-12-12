@@ -34,7 +34,7 @@ public:
       Point start{0, 0};
       while (true)
       {
-        int checkX = start.x % (mData.max_x + 1);
+        LL checkX = start.x % (mData.max_x + 1);
 
         if (mData.hasAt({checkX, start.y}, '#'))
           crttotal++;

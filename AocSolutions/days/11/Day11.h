@@ -65,8 +65,8 @@ public:
       }
     };
 
-    for (int x : rangeint(-1, 1))
-      for (int y : rangeint(-1, 1))
+    for (LL x : rangeint(-1, 1))
+      for (LL y : rangeint(-1, 1))
       {
         if (abs(x) != 0 || abs(y) != 0)
           walk({ x, y });

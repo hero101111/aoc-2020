@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SolutionDay.h"
-#include "util/executer.h"
+#include "util/Executer.h"
 
 class Day8 : public ISolutionDay
 {
@@ -33,8 +33,7 @@ public:
     Executer exec;
     exec.ReadData(mData);
 
-    LL accumulator = 0;
-    unordered_set<int> executedIps;
+    unordered_set<long long> executedIps;
     exec.Execute([&](Executer &, LL iP) -> bool
     {
       bool executedAlready = executedIps.find(iP) != end(executedIps);
@@ -67,7 +66,7 @@ public:
 
       bool foundSolution = false;
 
-      unordered_set<int> executedIps;
+      unordered_set<LL> executedIps;
       execTRY.Execute([&](Executer & crtExecuter, LL iP) -> bool
       {
         bool executedAlready = executedIps.find(iP) != end(executedIps);

@@ -97,8 +97,9 @@ public:
         if (partTwo)
         {
           Point diff = waypoint;
-          for (auto i : rangeint(1, quant))
-            location = location + diff;
+          diff.x *= quant;
+          diff.y *= quant;
+          location = location + diff;
         }
         else
         {

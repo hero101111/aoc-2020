@@ -31,20 +31,19 @@ public:
     LL ret = 0;
 
     map<string, int> nodes;
-    Graph<string> g(mData.size() + 2);
+    Graph<string> g((int)mData.size() + 2);
 
     LL maxE = *max_element(begin(mData), end(mData)) + 3;
     mData.push_back(maxE);
     mData.push_back(0);
-    int crt = 0;
     for (auto d : mData)
     {
-      nodes[to_string(d)] = d;
+      nodes[to_string(d)] = (int)d;
     }
 
-    for (const auto i : nodes)
+    for (const auto & i : nodes)
     {
-      for (const auto j : nodes)
+      for (const auto & j : nodes)
       {
         auto node1 = i.first;
         auto node2 = j.first;
