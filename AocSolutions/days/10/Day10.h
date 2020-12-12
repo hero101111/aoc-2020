@@ -1,7 +1,6 @@
 #pragma once
 
 #include "SolutionDay.h"
-#include "util/util.h"
 
 class Day10 : public ISolutionDay
 {

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "SolutionDay.h"
-#include "util/util.h"
 
 class Day12 : public ISolutionDay
 {
@@ -38,7 +37,7 @@ public:
   char RotateDirection(char dir, int rot)
   {
     vector<char> dirs = { 'E', 'S', 'W', 'N' };
-    int start = find(dirs.begin(), dirs.end(), dir) - begin(dirs);
+    int start = (int)(find(dirs.begin(), dirs.end(), dir) - begin(dirs));
     int steps = rot / 90;
     int crtIndex = start;
     while (steps != 0)
@@ -57,7 +56,7 @@ public:
       if (crtIndex == dirs.size())
         crtIndex = 0;
       if (crtIndex == -1)
-        crtIndex = dirs.size() - 1;
+        crtIndex = (int)dirs.size() - 1;
 
       if (steps == 0)
         break;

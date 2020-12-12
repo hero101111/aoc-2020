@@ -22,9 +22,10 @@
 #include <queue>
 #include <stack>
 #include <assert.h>
-#include <ranges>
 
+#ifdef _MSC_VER
 #include <Windows.h>
+#endif
 
 
 using namespace std;

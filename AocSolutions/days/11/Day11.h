@@ -1,9 +1,6 @@
 #pragma once
 
 #include "SolutionDay.h"
-#include "util/util.h"
-
-using namespace std::views;
 
 class Day11 : public ISolutionDay
 {

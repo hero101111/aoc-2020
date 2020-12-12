@@ -1,7 +1,6 @@
 #pragma once
 
 #include "SolutionDay.h"
-#include "util/util.h"
 
 class Day2 : public ISolutionDay
 {
@@ -18,7 +17,12 @@ public:
   void ReadData()
   {
     mData.clear();
-    mData = rff(KINPUT "2\\input.txt");
+    mData = rff(GetInputPath());
+  }
+  
+  string GetDay() override
+  {
+    return "2";
   }
 
   long DoWork(int part)

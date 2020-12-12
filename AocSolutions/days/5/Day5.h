@@ -1,7 +1,6 @@
-﻿#pragma once
+#pragma once
 
 #include "SolutionDay.h"
-#include "util/util.h"
 
 class Day5 : public ISolutionDay
 {

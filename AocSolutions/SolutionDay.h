@@ -28,7 +28,7 @@ public:
   {
     const string day = GetDay(); 
     assert(day != "0");
-    return KINPUT + day + "\\" + mCurrentInput + ".txt";
+    return KINPUT + day + "/" + mCurrentInput + ".txt";
   };
 
 };

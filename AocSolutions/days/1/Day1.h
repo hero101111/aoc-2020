@@ -18,7 +18,12 @@ public:
   void ReadData()
   {
     mData.clear();
-    mData = rff(KINPUT "1\\input.txt");
+    mData = rff(GetInputPath());
+  }
+  
+  string GetDay() override
+  {
+    return "1";
   }
 
   long DoWork1()

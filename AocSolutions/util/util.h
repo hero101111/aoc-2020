@@ -4,6 +4,7 @@ using LL = long long;
 
 void pic(string data)
 {
+#ifdef _MSVC_VER
   const char* output = data.c_str();
   const size_t len = strlen(output) + 1;
   HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, len);
@@ -13,6 +14,13 @@ void pic(string data)
   EmptyClipboard();
   SetClipboardData(CF_TEXT, hMem);
   CloseClipboard();
+#endif
+#ifdef __APPLE__
+  const char proto_cmd[] = "echo '%s' | pbcopy";
+  char cmd[strlen(data.c_str()) + strlen(proto_cmd) - 1]; // -2 to remove the length of %s in proto cmd and + 1 for null terminator = -1
+  sprintf(cmd ,proto_cmd, data.c_str());
+  system(cmd);
+#endif
 }
 
 template<class T>
@@ -293,6 +301,8 @@ struct Point
     {
       return 4;
     }
+      assert(!"invalid");
+      return -1;
   }
 
   static char ArrowToDirection(char arrow)
@@ -1407,12 +1417,17 @@ long long power(long long x, long long y, long long p)
 }
 
 void toConsole(Point p, const string & s) {
+#ifdef _MSVC_VER
   DWORD dw;
   COORD here;
   HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
   here.X = p.x;
   here.Y = p.y;
   WriteConsoleOutputCharacter(hStdOut, s.c_str(), s.size(), here, &dw);
+#endif
+#ifdef __APPLE__
+  assert(!"Unsupported on current platform");
+#endif
 };
 
 long long binsearch(long long left, long long right, long long find, function<long long(long long)> func)
@@ -1429,7 +1444,18 @@ long long binsearch(long long left, long long right, long long find, function<lo
 
 //--------------------------------------
 
+#ifdef __APPLE__
+
+#define KINPUT   "/Users/gabriel/Repos/aoc-2020/AocSolutions/inputs/Day"
+#define KOUTPUT  "/Users/gabriel/Repos/aoc-2020/AocSolutions/output/output.txt"
+#define KVERBOSE "/Users/gabriel/Repos/aoc-2020/AocSolutions/output/verbose.txt"
+
+#endif
+
+#ifdef _MSC_VER
+
 #define KINPUT   "C:\\work\\aoc-2020\\AocSolutions\\inputs\\Day"
 #define KOUTPUT  "C:\\work\\aoc-2020\\AocSolutions\\output\\out.txt"
 #define KVERBOSE "C:\\work\\aoc-2020\\AocSolutions\\output\\verbose.txt"
 
+#endif
