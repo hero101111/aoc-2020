@@ -1396,6 +1396,24 @@ long long modInverse(long long a, long long m)
 
   return x;
 }
+
+
+LL getChineseRemainderMinNumber(const vector<pair<LL, LL>> & numbersAndRemainders)
+{
+  LL allProduct = 1;
+  for (auto numAndRemainder : numbersAndRemainders)
+    allProduct *= numAndRemainder.first;
+
+  LL result = 0;
+  for (auto numAndRemainder : numbersAndRemainders)
+  {
+    LL pp = allProduct / numAndRemainder.first;
+    result += numAndRemainder.second * modInverse(pp, numAndRemainder.first) * pp;
+  }
+
+  return result % allProduct;
+}
+
 /* Iterative Function to calculate (x^y)%p in O(log y) */
 long long power(long long x, long long y, long long p)
 {

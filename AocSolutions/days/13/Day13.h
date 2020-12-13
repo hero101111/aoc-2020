@@ -49,11 +49,11 @@ public:
       
       LL startTime = start;
       
-      sort(begin(buses), end(buses));
       while (true)
       {
         for (auto bus : buses)
         {
+          if (bus == -1) continue;
           if (startTime % bus == 0)
           {
             minBus = bus;
@@ -72,43 +72,17 @@ public:
     
     else
     {
-      LL max_bus_val = *max_element(begin(buses), end(buses));
-      LL max_bus_offset = max_element(begin(buses), end(buses))-begin(buses);
-      LL max_bus = max_bus_val;
-      
-      vector<LL> times;
+      vector<pair<LL, LL>> times;
       int offset = -1;
       for (auto bus : buses)
       {
         offset++;
         if (bus >= 0)
-          times.push_back(bus + offset);
+          times.push_back(make_pair(bus, bus - offset));
       }
       
-      LL searchT = (100000000000000 / max_bus) * max_bus;
-      bool found = false;
-      while (true)
-      {
-        found = true;
-        
-        LL extra = -1;
-        for (auto & bus : buses)
-        {
-          extra++;
-          if (bus == -1) continue;
-          if ((searchT - max_bus_offset + extra) % bus != 0)
-          {
-            found = false;
-            break;
-          }
-        }
-        if (found) break;
-        
-        searchT += max_bus;
-      }
-      ret = searchT - max_bus_offset;
+      ret = getChineseRemainderMinNumber(times);
     }
-    
     return ret;
   }
 
