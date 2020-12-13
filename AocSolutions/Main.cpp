@@ -49,7 +49,7 @@ int main(int argc, char** argv)
       runner.second->Test();
     }
   }
-  int DAY  = 1;
+  int DAY  = 13;
   int PART = 1;
 
   ///////////////////////////////
