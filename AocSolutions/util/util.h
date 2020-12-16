@@ -4,7 +4,7 @@ using LL = long long;
 
 void pic(string data)
 {
-#ifdef _MSVC_VER
+#ifdef _MSC_VER
   const char* output = data.c_str();
   const size_t len = strlen(output) + 1;
   HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, len);
@@ -1436,7 +1436,7 @@ long long power(long long x, long long y, long long p)
 }
 
 void toConsole(Point p, const string & s) {
-#ifdef _MSVC_VER
+#ifdef _MSC_VER
   DWORD dw;
   COORD here;
   HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
