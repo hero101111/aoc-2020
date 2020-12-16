@@ -42,6 +42,14 @@ vector<string> tok(string str, char sep = ' ')
   return ret;
 }
 
+vector<LL> stoll(const vector<string> & aVec)
+{
+  vector<LL> ret;
+  for (auto d : aVec)
+    ret.push_back(stoll(d));
+  return ret;
+}
+
 double sinDegress(int angle)
 {
   if (angle == 0)

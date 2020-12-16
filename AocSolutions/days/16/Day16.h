@@ -115,10 +115,8 @@ public:
     }
     else
     {
-      auto& interval = dataIntervals[crtIntervalIndex];
-     
-      auto& cand = intervalFieldCandidates[crtIntervalIndex];
-
+      auto & interval = dataIntervals[crtIntervalIndex];
+      auto & cand = intervalFieldCandidates[crtIntervalIndex];
       vector<int> newIntervals(pastIntervals.size());
       for (int i : rangeint(0, pastIntervals.size() - 1))
         newIntervals[i] = pastIntervals[i];
@@ -167,11 +165,7 @@ public:
       }
       if (step == Step::Ticket)
       {
-        auto tokens = tok(d, ',');
-
-        vector<LL> newTicket;
-        for (auto t : tokens)
-          myTicket.push_back(stoll(t));
+        myTicket = stoll(tok(d, ','));
       }
 
       if (step == Step::Nearby)
@@ -192,10 +186,7 @@ public:
           }
         }
         if (invalidTicket) continue;
-        vector<LL> newTicket;
-        for (auto t : tokens)
-          newTicket.push_back(stoll(t));
-        nearbyTickets.push_back(newTicket);
+        nearbyTickets.push_back(stoll(tokens));
       }
     }
 
@@ -211,10 +202,7 @@ public:
 
       ret = 1;
       for (int i : rangeint(0, 5))
-      {
-        LL crt = myTicket[solutionPartTwo[i]];
-        ret *= crt;
-      }
+        ret *= myTicket[solutionPartTwo[i]];
     }
 
     return ret;
