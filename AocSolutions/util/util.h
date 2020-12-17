@@ -82,11 +82,11 @@ double cosDegrees(int angle)
 
 struct Point
 {
-  long long x{ 0 }, y{ 0 }, z{ 0 };
+  long long x{ 0 }, y{ 0 }, z{ 0 }, w{ 0 };
 
   Point() {}
-  Point(long long ax, long long ay, long long az = 0) : x(ax), y(ay), z(az) { }
-  Point(string ax, string ay, string az = "0") : x(stoll(ax)), y(stoll(ay)), z(stoll(az)) { }
+  Point(long long ax, long long ay, long long az = 0, long long aw = 0) : x(ax), y(ay), z(az), w(aw) { }
+  Point(string ax, string ay, string az = "0", string aw = "0") : x(stoll(ax)), y(stoll(ay)), z(stoll(az)), w(stoll(aw)) { }
   Point(tuple<string, string> coord) : x(stoll(get<0>(coord))), y(stoll(get<1>(coord))), z(0) { }
   Point(tuple<string, string, string> coord) : x(stoll(get<0>(coord))), y(stoll(get<1>(coord))), z(stoll(get<2>(coord))) { }
 
@@ -98,6 +98,8 @@ struct Point
       return y;
     if (index == 2)
       return z;
+    if (index == 3)
+      return w;
     assert(!"Invalid coordinate");
     return x;
   }
@@ -110,13 +112,15 @@ struct Point
       return y;
     if (index == 2)
       return z;
+    if (index == 3)
+      return w;
     assert(!"Invalid coordinate");
     return x;
   }
 
   bool operator ==(const Point& other) const
   {
-    return x == other.x && y == other.y && z == other.z;
+    return x == other.x && y == other.y && z == other.z && w == other.w;
   }
 
   bool operator != (const Point& other) const
@@ -140,6 +144,8 @@ struct Point
     if (y == other.y && x < other.x)
       return true;
     if (y == other.y && x == other.x && z < other.z)
+      return true;
+    if (y == other.y && x == other.x && z == other.z && w < other.w)
       return true;
     return false;
   }
@@ -916,7 +922,7 @@ struct hash<Point>
 {
   std::size_t operator()(const Point& k) const
   {
-    string s = to_string(k[0]) + "_" + to_string(k[1]) + "_" + to_string(k[2]);
+    string s = to_string(k.x) + "_" + to_string(k.y) + "_" + to_string(k.z) + "_" + to_string(k.w);
 
     return hash<string>()(s);
   }
