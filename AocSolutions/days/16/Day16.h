@@ -60,7 +60,7 @@ public:
     return false;
   }
 
-  bool IsIndexCandidate(tuple<LL, LL, LL, LL> help, int index)
+  bool IsIndexCandidate(tuple<LL, LL, LL, LL> help, LL index)
   {
     bool satisfiesAll = true;
     for (auto ticket : nearbyTickets)
@@ -78,15 +78,15 @@ public:
   vector<int> GetIndexCandidates(tuple<LL, LL, LL, LL> help)
   {
     vector<int> ret;
-    for (int i : rangeint(0, myTicket.size() - 1))
+    for (LL i : rangeint(0, myTicket.size() - 1))
       if (IsIndexCandidate(help, i))
-        ret.push_back(i);
+        ret.push_back((int)i);
     return ret;
   }
 
   bool IsSolutionValid(vector<int> intervalFields)
   {
-    for (int i : rangeint(0, intervalFields.size() - 1))
+    for (LL i : rangeint(0, intervalFields.size() - 1))
     {
       auto& interval = dataIntervals[i];
       auto intervalField = intervalFields[i];
@@ -115,10 +115,9 @@ public:
     }
     else
     {
-      auto & interval = dataIntervals[crtIntervalIndex];
       auto & cand = intervalFieldCandidates[crtIntervalIndex];
       vector<int> newIntervals(pastIntervals.size());
-      for (int i : rangeint(0, pastIntervals.size() - 1))
+      for (LL i : rangeint(0, pastIntervals.size() - 1))
         newIntervals[i] = pastIntervals[i];
 
       for (auto c : cand)
@@ -201,7 +200,7 @@ public:
       Solve(0, {});
 
       ret = 1;
-      for (int i : rangeint(0, 5))
+      for (LL i : rangeint(0, 5))
         ret *= myTicket[solutionPartTwo[i]];
     }
 
