@@ -678,7 +678,7 @@ public:
 
     return *this;
   }
-
+  
   bool at(Point p, T * aOutVal)
   {
     auto xData = data.find(p.x);
@@ -842,6 +842,49 @@ public:
 
       ++crtLine;
     }
+  }
+  
+  DynamicMap<T> flipX()
+  {
+    DynamicMap<T> ret = *this;
+    for (auto [pos, c] : Traverse())
+    {
+      ret[{ ret.max_x - pos.x, pos.y}] = c;
+    }
+    return ret;
+  }
+  
+  DynamicMap<T> flipY()
+  {
+    DynamicMap<T> ret = *this;
+    for (auto [pos, c] : Traverse())
+    {
+      ret[{pos.x, ret.max_y - pos.y}] = c;
+    }
+    return ret;
+  }
+  
+  DynamicMap<T> rotateClockwise()
+  {
+    DynamicMap<T> ret = *this;
+    assert(max_x == max_y && min_y == min_x);
+    LL dimension = max_x + 1;
+
+    for (LL x = min_x; x < dimension / 2; x++)
+    {
+      for (LL y = x; y < dimension - x - 1; y++)
+      {
+        LL aux = ret[{x, y}];
+        ret[{x,y}] = ret[{y, dimension - 1 - x}];
+        
+        ret[{y,dimension - 1 - x}] = ret[{dimension - 1 - x, dimension - 1 - y}];
+        
+        ret[{dimension - 1 - x, dimension - 1 - y}] = ret[{dimension - 1 - y, x}];
+        
+        ret[{dimension - 1 - y, x}] = aux;
+      }
+    }
+    return ret;
   }
 
   void printf(string filePath, char empty= ' ', bool append = false, string prologue = "")
