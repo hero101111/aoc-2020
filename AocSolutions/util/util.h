@@ -1518,6 +1518,18 @@ long long binsearch(long long left, long long right, long long find, function<lo
   return left;
 }
 
+template<class KT, class VT>
+auto findInMapByValue(map<KT, VT> & m, VT & val)
+{
+  auto it = find_if(begin(m), end(m), [&val](const auto & it)
+  {
+    return it.second == val;
+  });
+  if (it != end(m))
+    return it;
+  return end(m);
+}
+
 //--------------------------------------
 
 #ifdef __APPLE__
