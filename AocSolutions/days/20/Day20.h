@@ -24,38 +24,22 @@ public:
   
   string UpperBorder()
   {
-    string ret;
-    for (LL borderX : data.range_x())
-      ret.push_back(data[{borderX, data.min_y}]);
-   
-    return ret;
+    return join(data.GetLine(data.min_y));
   }
   
   string LowerBorder()
   {
-    string ret;
-    for (LL borderX : data.range_x())
-      ret.push_back(data[{borderX, data.max_y}]);
-   
-    return ret;
+    return join(data.GetLine(data.max_y));
   }
   
   string LeftBorder()
   {
-    string ret;
-    for (LL borderY : data.range_y())
-      ret.push_back(data[{data.min_x, borderY}]);
-   
-    return ret;
+    return join(data.GetColumn(data.min_x));
   }
   
   string RightBorder()
   {
-    string ret;
-    for (LL borderY : data.range_y())
-      ret.push_back(data[{data.max_x, borderY}]);
-   
-    return ret;
+    return join(data.GetColumn(data.max_x));
   }
   
   void RemoveBorders()
@@ -416,11 +400,14 @@ public:
     auto walk = [&](Tile & tile)
     {
       auto maxRight = tile.GoMaxRight({});
-      auto maxLeft = tile.GoMaxLeft({});
+      auto maxLeft  = tile.GoMaxLeft({});
       auto maxUpper = tile.GoMaxUp({});
       auto maxLower = tile.GoMaxDown({});
 
-      return make_tuple(maxUpper.size(), maxUpper.back(), maxRight.size(), maxRight.back(), maxLower.size(), maxLower.back(), maxLeft.size(), maxLeft.back());
+      return make_tuple(maxUpper.size(), maxUpper.back(), 
+                        maxRight.size(), maxRight.back(), 
+                        maxLower.size(), maxLower.back(), 
+                        maxLeft.size(), maxLeft.back());
     };
     
     Tile* topLeft{}, * topRight{}, * lowerRight{}, * lowerLeft{};
@@ -428,44 +415,56 @@ public:
     LL part1ret = 1;
     for (auto & tile : manager.allTiles)
     {
-      auto [maxUpper, maxUpperO, maxRight, maxRightO, maxLower, maxLowerO, maxLeft, maxLeftO] =
-      walk(tile);
+      auto [maxUpper, maxUpperO, 
+            maxRight, maxRightO,
+            maxLower, maxLowerO,
+            maxLeft, maxLeftO] = walk(tile);
       
       // found upper left corner
-      if (maxRight == mapN && maxLower == mapN && maxLeft == 1 && maxUpper == 1)
+      if (maxRight == mapN && maxLower == mapN && 
+          maxLeft == 1 && maxUpper == 1)
       {
         LL l1 = tile.label;
         
-        auto [maxUpper2, maxUpperO2, maxRight2, maxRightO2, maxLower2, maxLowerO2, maxLeft2, maxLeftO2] =
-        walk(*maxRightO);
+        auto [maxUpper2, maxUpperO2, 
+              maxRight2, maxRightO2, 
+              maxLower2, maxLowerO2, 
+              maxLeft2, maxLeftO2] = walk(*maxRightO);
         
         // upper right corner
-        if (maxRight2 == 1 && maxLower2 == mapN && maxLeft2 == mapN && maxUpper2 == 1)
+        if (maxLower2 == mapN && maxLeft2 == mapN && 
+            maxUpper2 == 1 && maxRight2 == 1)
         {
           LL l2 = maxRightO->label;
           
-          auto [maxUpper3, maxUpperO3, maxRight3, maxRightO3, maxLower3, maxLowerO3, maxLeft3, maxLeftO3] =
-          walk(*maxLowerO2);
+          auto [maxUpper3, maxUpperO3, 
+                maxRight3, maxRightO3, 
+                maxLower3, maxLowerO3, 
+                maxLeft3, maxLeftO3] = walk(*maxLowerO2);
           
           // lower right corner
-          if (maxRight3 == 1 && maxLower3 == 1 && maxLeft3 == mapN && maxUpper3 == mapN)
+          if (maxLeft3 == mapN && maxUpper3 == mapN && 
+              maxRight3 == 1 && maxLower3 == 1)
           {
             LL l3 = maxLowerO2->label;
             
-            auto [maxUpper4, maxUpperO4, maxRight4, maxRightO4, maxLower4, maxLowerO4, maxLeft4, maxLeftO4] =
-            walk(*maxLeftO3);
+            auto [maxUpper4, maxUpperO4, 
+                  maxRight4, maxRightO4, 
+                  maxLower4, maxLowerO4, 
+                  maxLeft4, maxLeftO4] = walk(*maxLeftO3);
             
             // lower left corner
-            if (maxLeft4 == 1 && maxLower4 == 1 && maxUpper4 == mapN && maxRight4 == mapN)
+            if (maxUpper4 == mapN && maxRight4 == mapN &&
+                maxLeft4 == 1 && maxLower4 == 1)
             {
               LL l4 = maxLeftO3->label;
               
               part1ret = l1 * l2 * l3 * l4;
               
-              topLeft = &tile; // lower right
-              topRight = maxRightO; // upper right
+              topLeft = &tile;         // lower right
+              topRight = maxRightO;    // upper right
               lowerRight = maxLowerO2; // upper left
-              lowerLeft = maxLeftO3; // lower right
+              lowerLeft = maxLeftO3;   // lower right
               
               break;
             }
@@ -476,11 +475,6 @@ public:
     
     if (!partTwo)
       return part1ret;
-    
-    if (mCurrentInput == "input")
-    {
-      assert(part1ret == 2699020245973);
-    }
     
     LL part2ret = 1;
     

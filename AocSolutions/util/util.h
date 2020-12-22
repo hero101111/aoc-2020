@@ -43,7 +43,7 @@ vector<string> tok(string str, char sep = ' ')
 }
 
 template<class T>
-string join(vector<T>& const v, string sep = ","s)
+string join(const vector<T>& const v, string sep = ","s)
 {
   string ret;
   for (auto i = begin(v); i != end(v); ++i)
@@ -56,7 +56,7 @@ string join(vector<T>& const v, string sep = ","s)
 }
 
 template<>
-string join(vector<string>& const v, string sep)
+string join(const vector<string>& const v, string sep)
 {
   string ret;
   for (auto i = begin(v); i != end(v); ++i)
@@ -766,6 +766,32 @@ public:
     if (!at(p, nullptr))
      set(p, T());
     return data[p.x][p.y];
+  }
+
+  vector<T> GetLine(LL y) const
+  {
+    vector<T> ret;
+    LL startX = min_x;
+    T content;
+    for (; startX <= max_x; ++startX)
+    {
+      if (at({ startX, y }, &content))
+        ret.push_back(content);
+    }
+    return ret;
+  }
+
+  vector<T> GetColumn(LL x) const
+  {
+    vector<T> ret;
+    LL startY = min_y;
+    T content;
+    for (; startY <= max_y; ++startY)
+    {
+      if (at({ x, startY }, &content))
+        ret.push_back(content);
+      }
+      return ret;
   }
 
   bool operator == (const DynamicMap<T>& other) const
