@@ -42,6 +42,32 @@ vector<string> tok(string str, char sep = ' ')
   return ret;
 }
 
+template<class T>
+string join(vector<T>& const v, string sep = ","s)
+{
+  string ret;
+  for (auto i = begin(v); i != end(v); ++i)
+  {
+    ret += to_string(*i);
+    if (distance(i, end(v)) >= 2)
+      ret += sep;
+  }
+  return ret;
+}
+
+template<>
+string join(vector<string>& const v, string sep)
+{
+  string ret;
+  for (auto i = begin(v); i != end(v); ++i)
+  {
+    ret += *i;
+    if (distance(i, end(v)) >= 2)
+      ret += sep;
+  }
+  return ret;
+}
+
 vector<LL> stoll(const vector<string> & aVec)
 {
   vector<LL> ret;
