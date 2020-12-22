@@ -423,7 +423,7 @@ public:
       return make_tuple(maxUpper.size(), maxUpper.back(), maxRight.size(), maxRight.back(), maxLower.size(), maxLower.back(), maxLeft.size(), maxLeft.back());
     };
     
-    Tile *topLeft, *topRight, *lowerRight, *lowerLeft;
+    Tile* topLeft{}, * topRight{}, * lowerRight{}, * lowerLeft{};
     
     LL part1ret = 1;
     for (auto & tile : manager.allTiles)
