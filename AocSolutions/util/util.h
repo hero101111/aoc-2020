@@ -43,7 +43,20 @@ vector<string> tok(string str, char sep = ' ')
 }
 
 template<class T>
-string join(const vector<T>& const v, string sep = ","s)
+string join(const list<T>&  v, string sep = ","s)
+{
+  string ret;
+  for (auto i = begin(v); i != end(v); ++i)
+  {
+    ret += to_string(*i);
+    if (distance(i, end(v)) >= 2)
+      ret += sep;
+  }
+  return ret;
+}
+
+template<class T>
+string join(const vector<T>&  v, string sep = ","s)
 {
   string ret;
   for (auto i = begin(v); i != end(v); ++i)
@@ -56,7 +69,7 @@ string join(const vector<T>& const v, string sep = ","s)
 }
 
 template<>
-string join(const vector<string>& const v, string sep)
+string join(const vector<string>&  v, string sep)
 {
   string ret;
   for (auto i = begin(v); i != end(v); ++i)
